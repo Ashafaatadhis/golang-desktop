@@ -1,5 +1,6 @@
 package main
 
+// import package
 import (
 	"fmt"
 	"image/color"
@@ -14,12 +15,10 @@ import (
 )
 
 type Barang struct {
-	nama string
+	nama  string
 	harga int
 }
 
- 
- 
 func main() {
 	a := app.New()
 	w := a.NewWindow("Belanja kuyyy")
@@ -30,13 +29,13 @@ func main() {
 }
 
 func HomePage(writer fyne.Window) *fyne.Container {
-	
+
 	welcomeLabel := widget.NewLabelWithStyle("selamat datang di toko belaja kuyyy", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
 
-	btn1 := widget.NewButton("Sign In", func ()  {
+	btn1 := widget.NewButton("Sign In", func() {
 		signIn(writer, HomePage)
 	})
-	
+
 	btn2 := widget.NewButton("Sign Up", func() {
 		signUp(writer, HomePage)
 
@@ -47,16 +46,16 @@ func HomePage(writer fyne.Window) *fyne.Container {
 
 }
 
-func signIn(writer fyne.Window, back func (writer fyne.Window) *fyne.Container){
-	
+func signIn(writer fyne.Window, back func(writer fyne.Window) *fyne.Container) {
+
 	LoginPage(writer, back)
 
 }
 
-func signUp(writer fyne.Window, back func (writer fyne.Window) *fyne.Container){
+func signUp(writer fyne.Window, back func(writer fyne.Window) *fyne.Container) {
 	var username string
 	var password string
-	
+
 	c := new(fyne.Container)
 	c.Layout = layout.NewVBoxLayout()
 	usernameLabel := widget.NewLabel("username")
@@ -73,7 +72,7 @@ func signUp(writer fyne.Window, back func (writer fyne.Window) *fyne.Container){
 	passwordEntry.Password = true
 	passwordEntry.OnChanged = func(s string) {
 		password = s
-		
+
 	}
 	c.Add(usernameLabel)
 	c.Add(usernameEntry)
@@ -82,11 +81,10 @@ func signUp(writer fyne.Window, back func (writer fyne.Window) *fyne.Container){
 	btnLay := new(fyne.Container)
 	btnLay.Layout = layout.NewGridLayoutWithColumns(2)
 
-
-	backButton := widget.NewButton("Back", func(){
+	backButton := widget.NewButton("Back", func() {
 		writer.SetContent(back(writer))
 	})
-	submitButton := widget.NewButton("Submit", func(){
+	submitButton := widget.NewButton("Submit", func() {
 		fmt.Print(username, password)
 		RegistConfPage(writer, back)
 	})
@@ -97,7 +95,7 @@ func signUp(writer fyne.Window, back func (writer fyne.Window) *fyne.Container){
 	writer.SetContent(c)
 }
 
-func RegistConfPage(writer fyne.Window, back func (writer fyne.Window) *fyne.Container){
+func RegistConfPage(writer fyne.Window, back func(writer fyne.Window) *fyne.Container) {
 	master := new(fyne.Container)
 	master.Layout = layout.NewCenterLayout()
 	vb := new(fyne.Container)
@@ -110,11 +108,11 @@ func RegistConfPage(writer fyne.Window, back func (writer fyne.Window) *fyne.Con
 	writer.SetContent(master)
 }
 
-func LoginPage(writer fyne.Window,  back func (writer fyne.Window) *fyne.Container) {
-	
+func LoginPage(writer fyne.Window, back func(writer fyne.Window) *fyne.Container) {
+
 	var username string
 	var password string
-	
+
 	c := new(fyne.Container)
 	c.Layout = layout.NewVBoxLayout()
 	usernameLabel := widget.NewLabel("username")
@@ -139,15 +137,14 @@ func LoginPage(writer fyne.Window,  back func (writer fyne.Window) *fyne.Contain
 	btnLay := new(fyne.Container)
 	btnLay.Layout = layout.NewGridLayoutWithColumns(2)
 
-
-	backButton := widget.NewButton("Back", func(){
+	backButton := widget.NewButton("Back", func() {
 		writer.SetContent(back(writer))
 	})
-	submitButton := widget.NewButton("Submit", func(){
- 
+	submitButton := widget.NewButton("Submit", func() {
+
 		if username == "admin" && password == "123" {
 			IndexPage(writer)
-		}else{
+		} else {
 			writer.SetContent(back(writer))
 		}
 	})
@@ -156,37 +153,35 @@ func LoginPage(writer fyne.Window,  back func (writer fyne.Window) *fyne.Contain
 	btnLay.Add(backButton)
 	c.Add(btnLay)
 	writer.SetContent(c)
-	
+
 }
 
-
-
-func IndexPage(writer fyne.Window){
+func IndexPage(writer fyne.Window) {
 	// Isi barang
 	barang := []Barang{
 
 		{
-			nama: "Kipas",
+			nama:  "Kipas",
 			harga: 10000,
 		},
 		{
-			nama: "Kayu",
+			nama:  "Kayu",
 			harga: 20200,
 		},
 		{
-			nama: "Pensil",
+			nama:  "Pensil",
 			harga: 20200,
 		},
 		{
-			nama: "TV",
+			nama:  "TV",
 			harga: 20200,
 		},
 		{
-			nama: "Bantal Waifu",
+			nama:  "Bantal Waifu",
 			harga: 20200,
 		},
 		{
-			nama: "Nasi padang",
+			nama:  "Nasi padang",
 			harga: 10000,
 		},
 	}
@@ -199,18 +194,14 @@ func IndexPage(writer fyne.Window){
 	c := new(fyne.Container)
 	c.Layout = layout.NewGridLayoutWithColumns(2)
 
- 
-	 
-	for _, b := range(barang) {
+	for _, b := range barang {
 		img := canvas.NewImageFromFile("./bang.png")
 		a := container.NewGridWrap(fyne.NewSize(250, 250))
 		a.Add(img)
-		c.Add(widget.NewCard(b.nama, strconv.Itoa(b.harga),a))
+		c.Add(widget.NewCard(b.nama, strconv.Itoa(b.harga), a))
 	}
 
 	mas.Add(c)
 	master := container.NewVScroll(mas)
 	writer.SetContent(master)
 }
- 
-
