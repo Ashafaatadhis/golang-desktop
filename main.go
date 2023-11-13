@@ -1,6 +1,8 @@
 package main
 
 // import package
+
+// elaina cantik jir
 import (
 	"fmt"
 	"image/color"
