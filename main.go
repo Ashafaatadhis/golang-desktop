@@ -1,8 +1,6 @@
 package main
 
-// import package
-
-// elaina cantik jir
+// package
 import (
 	"fmt"
 	"image/color"
@@ -17,19 +15,22 @@ import (
 )
 
 type Barang struct {
-	nama  string
-	harga int
+	nama   string
+	harga  int
+	gambar string
 }
 
+// func main
 func main() {
 	a := app.New()
 	w := a.NewWindow("Belanja kuyyy")
-	w.Resize(fyne.NewSize(450, 400))
+	w.Resize(fyne.NewSize(650, 550))
 	content := HomePage(w)
 	w.SetContent(content)
 	w.ShowAndRun()
 }
 
+// func hamepage
 func HomePage(writer fyne.Window) *fyne.Container {
 
 	welcomeLabel := widget.NewLabelWithStyle("selamat datang di toko belaja kuyyy", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
@@ -48,12 +49,14 @@ func HomePage(writer fyne.Window) *fyne.Container {
 
 }
 
+// func sign in
 func signIn(writer fyne.Window, back func(writer fyne.Window) *fyne.Container) {
 
 	LoginPage(writer, back)
 
 }
 
+// func sign up
 func signUp(writer fyne.Window, back func(writer fyne.Window) *fyne.Container) {
 	var username string
 	var password string
@@ -97,6 +100,7 @@ func signUp(writer fyne.Window, back func(writer fyne.Window) *fyne.Container) {
 	writer.SetContent(c)
 }
 
+// Label sign up
 func RegistConfPage(writer fyne.Window, back func(writer fyne.Window) *fyne.Container) {
 	master := new(fyne.Container)
 	master.Layout = layout.NewCenterLayout()
@@ -110,6 +114,7 @@ func RegistConfPage(writer fyne.Window, back func(writer fyne.Window) *fyne.Cont
 	writer.SetContent(master)
 }
 
+// label dan login page
 func LoginPage(writer fyne.Window, back func(writer fyne.Window) *fyne.Container) {
 
 	var username string
@@ -158,33 +163,105 @@ func LoginPage(writer fyne.Window, back func(writer fyne.Window) *fyne.Container
 
 }
 
+// BELUM KELAR
+func CheckoutPage(writer fyne.Window) {
+
+	// var namabarang string
+	// var hargabarang int
+
+	out := canvas.NewText("Terima kasih telah Berbelanja", color.Black)
+	out.Alignment = fyne.TextAlignCenter
+	out.TextStyle = fyne.TextStyle{Bold: true}
+	out.TextSize = 30
+	writer.SetContent(out)
+
+	// c := new(fyne.Container)
+	// c.Layout = layout.NewVBoxLayout()
+	// namabarangLabel := widget.NewLabel("nama barang")
+	// namabarangLabel.Alignment = fyne.TextAlignCenter
+
+	// namabarangEntry := widget.NewEntry()
+	// namabarangEntry.OnChanged = func(s string) {
+	// 	namabarang = s
+	// }
+	// hargabarangLabel := widget.NewLabel("harga")
+	// hargabarangLabel.Alignment = fyne.TextAlignCenter
+
+	// hargabarangEntry := widget.NewEntry()
+	// hargabarangEntry.OnChanged = func(s string) {
+	// 	namabarang = s
+	// }
+	// c.Add(namabarangLabel)
+	// c.Add(namabarangEntry)
+	// c.Add(hargabarangLabel)
+	// c.Add(namabarangEntry)
+
+}
+
+// halaman utama
 func IndexPage(writer fyne.Window) {
 	// Isi barang
 	barang := []Barang{
 
 		{
-			nama:  "Kipas",
-			harga: 10000,
+			nama:   "Led TV",
+			harga:  10000000,
+			gambar: "./tv.jpg",
 		},
 		{
-			nama:  "Kayu",
-			harga: 20200,
+			nama:   "Monitor",
+			harga:  1500000,
+			gambar: "./monitor.png",
 		},
 		{
-			nama:  "Pensil",
-			harga: 20200,
+			nama:   "Laptop",
+			harga:  7500000,
+			gambar: "./laptop.jpeg",
 		},
 		{
-			nama:  "TV",
-			harga: 20200,
+			nama:   "Meja Gaming",
+			harga:  2000000,
+			gambar: "./meja.jpg",
 		},
 		{
-			nama:  "Bantal Waifu",
-			harga: 20200,
+			nama:   "Mouse Gaming",
+			harga:  98000,
+			gambar: "./mouse.png",
 		},
 		{
-			nama:  "Nasi padang",
-			harga: 10000,
+			nama:   "mechanical keyboard",
+			harga:  1000000,
+			gambar: "./keyboard.png",
+		},
+		{
+			nama:   "AC",
+			harga:  15000000,
+			gambar: "./AC.png",
+		},
+		{
+			nama:   "Panci",
+			harga:  150000,
+			gambar: "./panci.jpeg",
+		},
+		{
+			nama:   "Masker",
+			harga:  30000,
+			gambar: "./masker.jpg",
+		},
+		{
+			nama:   "Senter",
+			harga:  80000,
+			gambar: "./senter.jpg",
+		},
+		{
+			nama:   "Kulkas",
+			harga:  2000000,
+			gambar: "./kulkas.jpeg",
+		},
+		{
+			nama:   "Kipas Angin",
+			harga:  250000,
+			gambar: "./kipas.jpg",
 		},
 	}
 	welcome := canvas.NewText("Selamat datang di Belanja Kuyy", color.Black)
@@ -197,13 +274,18 @@ func IndexPage(writer fyne.Window) {
 	c.Layout = layout.NewGridLayoutWithColumns(2)
 
 	for _, b := range barang {
-		img := canvas.NewImageFromFile("./bang.png")
+		img := canvas.NewImageFromFile(b.gambar)
 		a := container.NewGridWrap(fyne.NewSize(250, 250))
 		a.Add(img)
-		c.Add(widget.NewCard(b.nama, strconv.Itoa(b.harga), a))
+		c.Add(widget.NewCard(b.nama, "Rp"+strconv.Itoa(b.harga), a))
 	}
 
+	checkout := widget.NewButton("Checkout", func() {
+		CheckoutPage(writer)
+	})
+
 	mas.Add(c)
+	mas.Add(checkout)
 	master := container.NewVScroll(mas)
 	writer.SetContent(master)
 }
