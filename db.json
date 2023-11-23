@@ -1,0 +1,62 @@
+[
+  {
+    "nama": "Led TV",
+    "harga": 10000000,
+    "gambar": "./tv.jpg"
+  },
+  {
+    "nama": "Monitor",
+    "harga": 1500000,
+    "gambar": "./monitor.png"
+  },
+  {
+    "nama": "Laptop",
+    "harga": 7500000,
+    "gambar": "./laptop.jpeg"
+  },
+  {
+    "nama": "Meja Gaming",
+    "harga": 2000000,
+    "gambar": "./meja.jpg"
+  },
+  {
+    "nama": "Mouse Gaming",
+    "harga": 98000,
+    "gambar": "./mouse.png"
+  },
+  {
+    "nama": "mechanical keyboard",
+    "harga": 1000000,
+    "gambar": "./keyboard.png"
+  },
+  {
+    "nama": "AC",
+    "harga": 15000000,
+    "gambar": "./AC.png"
+  },
+  {
+    "nama": "Panci",
+    "harga": 150000,
+    "gambar": "./panci.jpeg"
+  },
+  {
+    "nama": "Masker",
+    "harga": 30000,
+    "gambar": "./masker.jpg"
+  },
+  {
+    "nama": "Senter",
+    "harga": 80000,
+    "gambar": "./senter.jpg"
+  },
+  {
+    "nama": "Kulkas",
+    "harga": 2000000,
+    "gambar": "./kulkas.jpeg"
+  },
+  {
+    "nama": "Kipas Angin",
+    "harga": 250000,
+    "gambar": "./kipas.jpg"
+  }
+]

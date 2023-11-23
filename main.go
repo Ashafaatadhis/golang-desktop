@@ -2,8 +2,10 @@ package main
 
 // package
 import (
+	"encoding/json"
 	"fmt"
 	"image/color"
+	"io/ioutil"
 	"strconv"
 
 	"fyne.io/fyne/v2"
@@ -15,9 +17,9 @@ import (
 )
 
 type Barang struct {
-	nama   string
-	harga  int
-	gambar string
+	Nama   string	`json:"nama"`
+	Harga  int		`json:"harga"`
+	Gambar string	`json:"gambar"`
 }
 
 // func main
@@ -165,127 +167,147 @@ func LoginPage(writer fyne.Window, back func(writer fyne.Window) *fyne.Container
 
 // BELUM KELAR
 func CheckoutPage(writer fyne.Window) {
+	
+	master := new(fyne.Container)
+	subMaster := new(fyne.Container)
+	subMaster.Layout = layout.NewVBoxLayout()
 
-	// var namabarang string
-	// var hargabarang int
-
+	master.Layout = layout.NewCenterLayout()
+	con := container.NewCenter()
 	out := canvas.NewText("Terima kasih telah Berbelanja", color.Black)
+	btn := widget.NewButton("Lanjut" , func ()  {
+		IndexPage(writer)
+	})
+
 	out.Alignment = fyne.TextAlignCenter
 	out.TextStyle = fyne.TextStyle{Bold: true}
 	out.TextSize = 30
-	writer.SetContent(out)
-
-	// c := new(fyne.Container)
-	// c.Layout = layout.NewVBoxLayout()
-	// namabarangLabel := widget.NewLabel("nama barang")
-	// namabarangLabel.Alignment = fyne.TextAlignCenter
-
-	// namabarangEntry := widget.NewEntry()
-	// namabarangEntry.OnChanged = func(s string) {
-	// 	namabarang = s
-	// }
-	// hargabarangLabel := widget.NewLabel("harga")
-	// hargabarangLabel.Alignment = fyne.TextAlignCenter
-
-	// hargabarangEntry := widget.NewEntry()
-	// hargabarangEntry.OnChanged = func(s string) {
-	// 	namabarang = s
-	// }
-	// c.Add(namabarangLabel)
-	// c.Add(namabarangEntry)
-	// c.Add(hargabarangLabel)
-	// c.Add(namabarangEntry)
+	con.Add(btn)
+	
+	subMaster.Add(out)
+	subMaster.Add(con)
+	master.Add(subMaster)
+	
+	writer.SetContent(master)
 
 }
+
+func PilihBarang(writer fyne.Window){
+	
+	var barang []Barang
+	var listBarang []string
+	var namabarang string
+	var hargabarang int
+
+	ReadJsonToStruct(&barang)
+
+	for _,i := range barang {
+		listBarang = append(listBarang, i.Nama)
+	}
+
+	c := new(fyne.Container)
+	c.Layout = layout.NewVBoxLayout()
+	namabarangLabel := widget.NewLabel("nama barang")
+	namabarangLabel.Alignment = fyne.TextAlignCenter
+
+	hargabarangLabel := widget.NewLabel("harga")
+	hargabarangLabel.Alignment = fyne.TextAlignCenter
+
+	hargabarangEntry := widget.NewEntry()
+	hargabarangEntry.OnChanged = func(s string) {
+		namabarang = s
+	}
+
+
+	namabarangEntry := widget.NewSelect(listBarang, func(s string) {
+		// buat variabel harga
+		var harga int
+
+		// loooping struct barang
+		for _, i := range barang {
+			if i.Nama == s {
+				harga = i.Harga
+			}
+		}
+
+		hargabarangEntry.SetText(strconv.Itoa(harga))
+	 
+	})
+
+	lanjut := widget.NewButton("Lanjut", func() {
+		CheckoutPage(writer)
+	})
+
+	back := widget.NewButton("Back", func() {
+		IndexPage(writer)
+	})
+
+	layoutKananKiri := container.NewGridWithColumns(2)
+	layoutKananKiri.Add(back)
+	layoutKananKiri.Add(lanjut)
+	
+
+	fmt.Printf(namabarang, hargabarang)
+	c.Add(namabarangLabel)
+	c.Add(namabarangEntry)
+	c.Add(hargabarangLabel)
+	c.Add(hargabarangEntry)
+	c.Add(layoutKananKiri)
+ 
+
+	writer.SetContent(c)
+
+}
+
+
 
 // halaman utama
 func IndexPage(writer fyne.Window) {
 	// Isi barang
-	barang := []Barang{
+	var barang []Barang
 
-		{
-			nama:   "Led TV",
-			harga:  10000000,
-			gambar: "./tv.jpg",
-		},
-		{
-			nama:   "Monitor",
-			harga:  1500000,
-			gambar: "./monitor.png",
-		},
-		{
-			nama:   "Laptop",
-			harga:  7500000,
-			gambar: "./laptop.jpeg",
-		},
-		{
-			nama:   "Meja Gaming",
-			harga:  2000000,
-			gambar: "./meja.jpg",
-		},
-		{
-			nama:   "Mouse Gaming",
-			harga:  98000,
-			gambar: "./mouse.png",
-		},
-		{
-			nama:   "mechanical keyboard",
-			harga:  1000000,
-			gambar: "./keyboard.png",
-		},
-		{
-			nama:   "AC",
-			harga:  15000000,
-			gambar: "./AC.png",
-		},
-		{
-			nama:   "Panci",
-			harga:  150000,
-			gambar: "./panci.jpeg",
-		},
-		{
-			nama:   "Masker",
-			harga:  30000,
-			gambar: "./masker.jpg",
-		},
-		{
-			nama:   "Senter",
-			harga:  80000,
-			gambar: "./senter.jpg",
-		},
-		{
-			nama:   "Kulkas",
-			harga:  2000000,
-			gambar: "./kulkas.jpeg",
-		},
-		{
-			nama:   "Kipas Angin",
-			harga:  250000,
-			gambar: "./kipas.jpg",
-		},
-	}
+	 
+	ReadJsonToStruct(&barang)
+	
+
 	welcome := canvas.NewText("Selamat datang di Belanja Kuyy", color.Black)
 	welcome.Alignment = fyne.TextAlignCenter
 	welcome.TextStyle = fyne.TextStyle{Bold: true}
 	welcome.TextSize = 23
 	mas := container.NewVBox()
+	subMas := container.NewGridWithColumns(2)
 	mas.Add(welcome)
 	c := new(fyne.Container)
 	c.Layout = layout.NewGridLayoutWithColumns(2)
 
 	for _, b := range barang {
-		img := canvas.NewImageFromFile(b.gambar)
+		img := canvas.NewImageFromFile(b.Gambar)
 		a := container.NewGridWrap(fyne.NewSize(250, 250))
 		a.Add(img)
-		c.Add(widget.NewCard(b.nama, "Rp"+strconv.Itoa(b.harga), a))
+		c.Add(widget.NewCard(b.Nama, "Rp"+strconv.Itoa(b.Harga), a))
 	}
 
 	checkout := widget.NewButton("Checkout", func() {
-		CheckoutPage(writer)
+		PilihBarang(writer)
+	})
+	back := widget.NewButton("Back", func() {		
+		writer.SetContent(HomePage(writer))
 	})
 
+	subMas.Add(back)
+	subMas.Add(checkout)
+
 	mas.Add(c)
-	mas.Add(checkout)
+	mas.Add(subMas)
 	master := container.NewVScroll(mas)
 	writer.SetContent(master)
+}
+
+func ReadJsonToStruct(barang *[]Barang) {
+	content, err := ioutil.ReadFile("./db.json")
+	if err != nil {
+		panic(err)
+	}
+
+	json.Unmarshal(content, barang)
 }
