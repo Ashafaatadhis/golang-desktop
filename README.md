@@ -1,1 +1,1 @@
-# golang-desktop
+*Golang Desktop*
